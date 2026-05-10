@@ -1,0 +1,12 @@
+﻿fastmcp
+pandas
+scikit-learn
+mcp
+langgraph
+langchain
+anyio
+joblib
+groq
+streamlit
+python-dotenv
+mlxtend
