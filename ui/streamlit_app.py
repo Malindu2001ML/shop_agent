@@ -46,9 +46,7 @@ def start_mcp_servers():
                 text=True
             )
             processes.append(proc)
-            error_output = proc.stderr.read()
-            if error_output:
-                st.error(f"Server Error ({os.path.basename(script_path)}): {error_output}")
+            
     return processes
 
 if 'started' not in st.session_state:
