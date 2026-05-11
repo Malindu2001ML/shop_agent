@@ -12,39 +12,42 @@ from dotenv import load_dotenv
 current_dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.abspath(os.path.join(current_dir, ".."))
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
 @st.cache_resource
 def start_mcp_servers():
     processes = []
     
+    env = os.environ.copy()
+    env["PYTHONPATH"] = root_dir 
+
     server_scripts = [
         os.path.join(root_dir, "mcp_servers", "crud_server.py"),
         os.path.join(root_dir, "mcp_servers", "prediction_server.py"),
         os.path.join(root_dir, "mcp_servers", "recommendation_server.py")
     ]
     
-    st.write("Starting MCP Servers...")
-    
-    for script in server_scripts:
-        process = subprocess.Popen(
-            ["python", script],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        processes.append(process)
-        time.sleep(1) 
-        
+    for script_path in server_scripts:
+        if os.path.exists(script_path):
+            proc = subprocess.Popen(
+                [sys.executable, script_path],
+                env=env,
+                cwd=root_dir, 
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            processes.append(proc)
     return processes
 
-if 'servers_started' not in st.session_state:
-    st.session_state.mcp_processes = start_mcp_servers()
-    st.session_state.servers_started = True
-    st.success("All 3 MCP Servers are running in the background!")
+if 'started' not in st.session_state:
+    st.session_state.procs = start_mcp_servers()
+    st.session_state.started = True
 
 # --- Path & Env Setup ---
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-env_path = Path(__file__).resolve().parent.parent / ".env"
-load_dotenv(dotenv_path=env_path)
+
 
 from graph.workflow import build_graph
 from utils.mcp_client import mcp_client
