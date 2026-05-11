@@ -37,16 +37,17 @@ def start_mcp_servers():
     
     for script_path in server_scripts:
         if os.path.exists(script_path):
+            log_file = open(f"{script_path}.log", "a")
             proc = subprocess.Popen(
                 [sys.executable, script_path],
                 env=env,
                 cwd=root_dir, 
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=log_file,
+                stderr=log_file,
                 text=True
             )
             processes.append(proc)
-            
+    time.sleep(2)
     return processes
 
 if 'started' not in st.session_state:
