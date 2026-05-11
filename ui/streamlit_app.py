@@ -16,12 +16,18 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
+
+
 @st.cache_resource
 def start_mcp_servers():
     processes = []
     
     env = os.environ.copy()
-    env["PYTHONPATH"] = root_dir 
+    
+    if "PYTHONPATH" in env:
+        env["PYTHONPATH"] = f"{root_dir}{os.pathsep}{env['PYTHONPATH']}"
+    else:
+        env["PYTHONPATH"] = root_dir 
 
     server_scripts = [
         os.path.join(root_dir, "mcp_servers", "crud_server.py"),
@@ -45,8 +51,6 @@ def start_mcp_servers():
 if 'started' not in st.session_state:
     st.session_state.procs = start_mcp_servers()
     st.session_state.started = True
-
-# --- Path & Env Setup ---
 
 
 from graph.workflow import build_graph
