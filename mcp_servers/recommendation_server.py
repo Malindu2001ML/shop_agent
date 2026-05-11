@@ -3,8 +3,10 @@ import pandas as pd
 import joblib
 import os
 
-CSV_PATH = "data/shop_data.csv"
-RULES_PATH = "data/models/association_rules.pkl"
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+CSV_PATH = os.path.join(base_dir, "data", "shop_data.csv")
+RULES_PATH = os.path.join(base_dir, "data", "models", "association_rules.pkl")
 
 mcp = FastMCP("Shop Recommendation Server")
 

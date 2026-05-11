@@ -5,10 +5,13 @@ import joblib
 import os
 from datetime import timedelta
 
-CSV_PATH = "data/shop_data.csv"
-MODEL_PATH = "data/models/demand_model.pkl"
-SCALER_PATH = "data/models/scaler.pkl"
-FEATURE_COLS_PATH = "data/models/feature_cols.pkl"
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_PATH = os.path.join(base_dir, "data", "shop_data.csv")
+MODEL_DIR = os.path.join(base_dir, "data", "models")
+
+MODEL_PATH = os.path.join(MODEL_DIR, "demand_model.pkl")
+SCALER_PATH = os.path.join(MODEL_DIR, "scaler.pkl")
+FEATURE_COLS_PATH = os.path.join(MODEL_DIR, "feature_cols.pkl")
 
 mcp = FastMCP("ML Demand Prediction Server")
 

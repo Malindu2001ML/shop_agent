@@ -2,7 +2,9 @@ from fastmcp import FastMCP
 import pandas as pd
 import os
 
-CSV_PATH = "data/shop_data.csv"
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(base_dir, "data")
+CSV_PATH = os.path.join(DATA_DIR, "shop_data.csv")
 REQUIRED_COLS = ["InvoiceNo","StockCode","Description","Quantity","InvoiceDate","UnitPrice","CustomerID"]
 
 mcp = FastMCP("CSV CRUD Server")
