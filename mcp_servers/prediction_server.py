@@ -1,4 +1,4 @@
-from fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 import pandas as pd
 import numpy as np
 import joblib
